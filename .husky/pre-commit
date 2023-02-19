@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Checking your code before commiting..."
+echo "Please be patient, this may take a while..."
+
+npm run lint || (
+  echo "Oops! you have a problem in your code. please check linter, run `npm run lint` or `npm run lint:fix`, add changes and try commit again";
+  false;
+)
+
+echo "No error found, commiting this now..."
+
+npm run lint:staged
