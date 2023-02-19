@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import {
+import type {
   ChangeEvent,
   DetailedHTMLProps,
-  InputHTMLAttributes,
-  useState
+  InputHTMLAttributes
 } from "react";
+import { useState } from "react";
 
 export interface ReturnDataTypes {
   [key: string]: string | boolean;
