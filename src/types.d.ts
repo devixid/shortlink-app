@@ -23,4 +23,9 @@ declare global {
       skip?: number;
     };
   }
+
+  interface AssetPropTypes {
+    className?: string;
+    title?: string;
+  }
 }

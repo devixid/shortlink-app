@@ -6,6 +6,7 @@ import { Link } from "@/models";
 // import type { LinkSchemaType } from "@/models";
 import { ApiError, SendResponse } from "@/utils";
 import { randomBytes } from "crypto";
+import { Cookie } from "@/helpers";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,8 +16,8 @@ export default async function handler(
 
   if (method === "POST") {
     try {
-      const { headers } = req;
-      const { uid } = headers;
+      const uid = Cookie.getOne("uid", { req, res });
+      if (!uid) throw new ApiError(401, "Unauthorized");
 
       await connectDB();
 
@@ -75,7 +76,9 @@ export default async function handler(
     try {
       await connectDB();
 
-      const { uid } = req.headers;
+      const uid = Cookie.getOne("uid", { req, res });
+      if (!uid) throw new ApiError(401, "Unauthorized");
+
       const { skip, max } = req.query;
 
       const limit = max
