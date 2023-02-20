@@ -6,13 +6,10 @@ import { LinkForm } from "@/components/pages/home";
 import { Cookie } from "@/helpers";
 import type { ReturnDataTypes } from "@/hooks/useForm";
 
-interface HomePageProps {
-  uid: null | string;
-}
-
-function HomePage({ uid }: HomePageProps) {
-  const handleOnSubmit = (data: ReturnDataTypes) => {
-    console.log(data);
+function HomePage() {
+  const handleOnSubmit = (formData: ReturnDataTypes) => {
+    // eslint-disable-next-line no-console
+    console.log(formData);
   };
 
   return (
@@ -54,7 +51,7 @@ function HomePage({ uid }: HomePageProps) {
           )}
         />
 
-        <LinkForm onSubmit={handleOnSubmit} uid={uid || undefined} />
+        <LinkForm onSubmit={handleOnSubmit} />
       </div>
     </>
   );
@@ -81,18 +78,10 @@ export async function getServerSideProps(ctx: AppContext["ctx"]) {
         res
       });
     }
-
-    return {
-      props: {
-        uid: getUID
-      }
-    };
   }
 
   return {
-    props: {
-      uid
-    }
+    props: {}
   };
 }
 

@@ -27,5 +27,6 @@ declare global {
   interface AssetPropTypes {
     className?: string;
     title?: string;
+    "data-testid"?: string;
   }
 }

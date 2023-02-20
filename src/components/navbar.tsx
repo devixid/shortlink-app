@@ -98,6 +98,7 @@ function Navbar() {
         <DevixLogo
           className={clsx("h-20 w-20 md:h-24 md:w-24", "text-slate-900")}
           title="Devix Logo"
+          data-testid="test-devix-logo"
         />
 
         <nav

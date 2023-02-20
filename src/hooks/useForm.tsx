@@ -79,6 +79,7 @@ function useForm(): UseFormReturnTypes {
     const findObj = !!data.find((item) => item.name === name);
 
     if (!findObj) {
+      // eslint-disable-next-line no-console
       console.error(`useForm: Key '${name}' not found`);
       return;
     }

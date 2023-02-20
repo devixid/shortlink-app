@@ -1,10 +1,15 @@
 import clsx from "clsx";
 import { memo } from "react";
 
-function Logo({ className, title }: AssetPropTypes) {
+function Logo({ className, title, ...props }: AssetPropTypes) {
   return (
     <svg
       className={clsx(className)}
+      data-testid={
+        process.env.NODE_ENV === "test"
+          ? props["data-testid"] || undefined
+          : undefined
+      }
       viewBox="0 0 90 105"
       fill="none"
       xlinkTitle={title}
