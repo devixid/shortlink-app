@@ -63,3 +63,45 @@ export async function deleteShortlink(url: string) {
 
   return response;
 }
+
+export async function getShortlink(url: string) {
+  const response = await redaxios
+    .get(url)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.data;
+      }
+
+      return new Error("error");
+    })
+    .catch((error) => {
+      Notif.error(
+        error?.data?.message || error?.message || "Internal server error"
+      );
+
+      return error;
+    });
+
+  return response;
+}
+
+export async function getShortlinkMetaData(url: string) {
+  const response = await redaxios
+    .get(url)
+    .then((res) => {
+      if (res.status === 200) {
+        return res.data;
+      }
+
+      return new Error("error");
+    })
+    .catch((error) => {
+      Notif.error(
+        error?.data?.message || error?.message || "Internal server error"
+      );
+
+      return error;
+    });
+
+  return response;
+}

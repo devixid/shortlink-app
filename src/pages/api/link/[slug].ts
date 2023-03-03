@@ -7,7 +7,7 @@ import { ApiError, SendResponse } from "@/utils";
 import { Cookie } from "@/helpers";
 
 interface ResponseData {
-  forward_url?: string;
+  forward_url: string;
   slug: string;
   is_secret: boolean;
 }
@@ -29,7 +29,8 @@ export default async function handler(
       if (!data) throw new ApiError(404, "Link not found");
 
       const responseData = {
-        forward_url: !data.is_secret ? data.link.original_link : undefined,
+        forward_url: data.link.original_link,
+        // forward_url: !data.is_secret ? data.link.original_link : undefined,
         slug: data.link.slug,
         is_secret: data.is_secret
       };
