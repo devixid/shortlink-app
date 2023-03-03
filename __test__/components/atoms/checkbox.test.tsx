@@ -4,11 +4,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Checkbox } from "@/components/atoms";
 
 describe("Test `Checkbox` component", () => {
-  const renderCheckbox = () =>
-    render(<Checkbox data-testid="test-checkbox" name="checkbox" />);
-
   test("should render checkbox component", () => {
-    renderCheckbox();
+    render(<Checkbox data-testid="test-checkbox" name="checkbox" />);
     const checkbox = screen.getByTestId("test-checkbox");
 
     expect(checkbox).toBeInTheDocument();
@@ -16,7 +13,7 @@ describe("Test `Checkbox` component", () => {
   });
 
   test("should be checked when the component is clicked", () => {
-    renderCheckbox();
+    render(<Checkbox data-testid="test-checkbox" name="checkbox" />);
     const checkbox = screen.getByTestId("test-checkbox");
 
     expect(checkbox).toBeInTheDocument(); // checkbox must be rendered

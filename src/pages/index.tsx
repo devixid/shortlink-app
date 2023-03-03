@@ -1,15 +1,58 @@
 import clsx from "clsx";
 import type { AppContext } from "next/app";
+import { useMemo, useState } from "react";
 import redaxios from "redaxios";
 
+import { LinkCard } from "@/components/cards";
 import { LinkForm } from "@/components/pages/home";
+import { BASE_URL } from "@/constants";
 import { Cookie } from "@/helpers";
+import { useFetch } from "@/hooks";
 import type { ReturnDataTypes } from "@/hooks/useForm";
+import type { CreateShortlinkData } from "@/services";
+import { createShortlink, deleteShortlink } from "@/services";
+
+interface LinkResponseTypes {
+  _id: string;
+  original_link: string;
+  slug: string;
+  is_secret: boolean;
+  key: string;
+}
 
 function HomePage() {
-  const handleOnSubmit = (formData: ReturnDataTypes) => {
-    // eslint-disable-next-line no-console
-    console.log(formData);
+  const { data, refetch, isLoading } =
+    useFetch<HttpResponse<LinkResponseTypes[]>>("/api/link");
+  const links: LinkResponseTypes[] = useMemo(() => data?.data || [], [data]);
+
+  const [deleteId, setDeleteId] = useState<string>("");
+  const [showModalConfirmation, setShowModalConfirmation] =
+    useState<boolean>(false);
+
+  const handleOnSubmit = async (
+    formData: ReturnDataTypes,
+    reset: () => void
+  ) => {
+    await createShortlink(
+      `${BASE_URL}/api/link`,
+      formData as unknown as CreateShortlinkData
+    ).then((res) => {
+      if (res?.status_code === 201) {
+        refetch();
+        reset();
+      }
+    });
+  };
+
+  const onClickDelete = async () => {
+    if (!deleteId) return;
+
+    await deleteShortlink(`${BASE_URL}/api/link/${deleteId}`).then((res) => {
+      if (res.status_code === 200) {
+        setShowModalConfirmation(false);
+        refetch();
+      }
+    });
   };
 
   return (
@@ -51,7 +94,38 @@ function HomePage() {
           )}
         />
 
-        <LinkForm onSubmit={handleOnSubmit} />
+        <LinkForm onSubmit={handleOnSubmit} isLoading={isLoading} />
+      </div>
+
+      <div
+        className={clsx(
+          "container p-4 md:p-6",
+          "flex flex-col items-center justify-center gap-4"
+        )}
+      >
+        {links.map(({ _id, is_secret, original_link, slug, key: linkKey }) => (
+          <LinkCard
+            key={_id}
+            _id={_id}
+            is_secret={is_secret}
+            original_link={original_link}
+            slug={slug}
+            link_key={linkKey}
+            className={clsx("w-full")}
+            onClickDelete={() => {
+              setDeleteId(_id);
+              setShowModalConfirmation(true);
+            }}
+            modal={{
+              open: showModalConfirmation,
+              onConfirm: onClickDelete,
+              onClose: () => {
+                setDeleteId("");
+                setShowModalConfirmation(false);
+              }
+            }}
+          />
+        ))}
       </div>
     </>
   );

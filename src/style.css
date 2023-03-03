@@ -16,7 +16,7 @@
   }
 
   input,
-  button,
+  /* button, */
   textarea {
     @apply outline-none hover:outline-none focus:outline-none;
   }
@@ -25,6 +25,10 @@
 @layer components {
   .container {
     @apply mx-auto w-full sm:max-w-lg md:max-w-2xl lg:max-w-5xl xl:max-w-7xl;
+  }
+
+  .modal-content {
+    @apply mx-auto w-full sm:max-w-lg md:max-w-2xl;
   }
 
   .input-base {

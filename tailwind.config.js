@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require("tailwindcss/defaultTheme");
@@ -14,5 +15,5 @@ module.exports = {
       }
     }
   },
-  plugins: []
+  plugins: [require("@tailwindcss/line-clamp")]
 };

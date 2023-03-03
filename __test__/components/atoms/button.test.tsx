@@ -4,39 +4,42 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { Button } from "@/components/atoms";
 
 describe("Test `Button` component", () => {
-  const renderButton = () =>
+  test("should render the button", () => {
     render(
       <Button type="button" data-testid="test-button">
         Test Button
       </Button>
     );
 
-  test("should render the button", () => {
-    renderButton();
     const getButtonByText = screen.getByText(/Test Button/i);
     const getButtonByTestId = screen.getByTestId("test-button");
 
     expect(getButtonByText).toBeInTheDocument();
+    expect(getButtonByText).toHaveTextContent(/Test Button/);
     expect(getButtonByText).toBeEnabled();
     expect(getButtonByText).toBeVisible();
 
     expect(getButtonByTestId).toBeInTheDocument();
+    expect(getButtonByTestId).toHaveTextContent(/Test Button/);
     expect(getButtonByTestId).toBeEnabled();
     expect(getButtonByTestId).toBeVisible();
   });
 
   test("should be disabled when the button is clicked", () => {
-    renderButton();
-    const button = screen.getByTestId("test-button");
+    render(
+      <Button type="button" data-testid="test-button">
+        Test Button
+      </Button>
+    );
 
-    expect(button).toBeInTheDocument(); // button must be rendered
-    expect(button).toBeEnabled();
-    expect(button).toBeVisible();
+    const button = screen.getByTestId("test-button");
 
     button.addEventListener("click", () => button.setAttribute("disabled", "")); // disabled the button when it is clicked
 
     fireEvent.click(button);
 
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent(/Test Button/);
     expect(button).toBeDisabled();
   });
 });

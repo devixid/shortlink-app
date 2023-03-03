@@ -27,8 +27,12 @@ export default async function handler(
         const check = await Link.findOne({ "link.slug": slug });
 
         if (check) {
-          throw new ApiError(409, `'${slug}' already used`);
+          throw new ApiError(409, `slug '${slug}' already used`);
         }
+      }
+
+      if (is_secret && !key) {
+        throw new ApiError(400, "key must be filled");
       }
 
       const link = new Link({
@@ -79,28 +83,9 @@ export default async function handler(
       const uid = Cookie.getOne("uid", { req, res });
       if (!uid) throw new ApiError(401, "Unauthorized");
 
-      const { skip, max } = req.query;
-
-      const limit = max
-        ? !Number.isNaN(parseInt(max as string, 10))
-          ? parseInt(max as string, 10)
-          : 10
-        : 10;
-      const skipFrom = skip
-        ? !Number.isNaN(parseInt(skip as string, 10))
-          ? parseInt(skip as string, 10)
-          : 0
-        : 0;
-
-      if (!uid) {
-        throw new ApiError(400, "uid is required");
-      }
-
       const links = await Link.find({
         uid
-      })
-        .limit(limit)
-        .skip(skipFrom);
+      }).sort("-created_at");
 
       return SendResponse(res, {
         status: "ok",
@@ -109,15 +94,10 @@ export default async function handler(
         data: links.map(({ link, _id, is_secret }) => ({
           _id,
           slug: link.slug,
-          origianl_link: link.original_link,
+          original_link: link.original_link,
           is_secret,
           key: link.key
-        })),
-        length: links.length,
-        query: {
-          limit,
-          skip: skipFrom
-        }
+        }))
       });
     } catch (error: any) {
       if (error instanceof ApiError) {

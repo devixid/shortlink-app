@@ -3,7 +3,6 @@ import type { AppProps } from "next/app";
 import { Navbar } from "@/components";
 
 import "@/style.css";
-import "notyf/notyf.min.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

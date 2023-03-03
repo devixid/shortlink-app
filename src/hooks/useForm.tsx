@@ -22,6 +22,7 @@ interface UseFormReturnTypes {
     HTMLInputElement
   >;
   setForm: (name: string, value: string) => void;
+  reset: () => void;
   data: ReturnDataTypes;
 }
 
@@ -30,7 +31,7 @@ interface UseFormDataTypes {
   value: string;
 }
 
-function useForm(): UseFormReturnTypes {
+function useForm<T>(): UseFormReturnTypes {
   const [data, setData] = useState<UseFormDataTypes[]>([]);
 
   const register = (
@@ -75,6 +76,15 @@ function useForm(): UseFormReturnTypes {
     };
   };
 
+  const reset = () => {
+    setData((prevData) =>
+      prevData.map((item) => ({
+        ...item,
+        value: ""
+      }))
+    );
+  };
+
   const setForm = (name: string, value: any) => {
     const findObj = !!data.find((item) => item.name === name);
 
@@ -111,6 +121,7 @@ function useForm(): UseFormReturnTypes {
 
   return {
     register,
+    reset,
     setForm,
     data: formState
   };

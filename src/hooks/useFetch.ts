@@ -30,14 +30,11 @@ function useFetch<T>(
       .get(url)
       .then((res) => {
         if (res.status === 200) {
-          setData(res.data.data);
+          setData(res.data);
         }
       })
       .catch((err: any) => {
-        // eslint-disable-next-line no-console
-        console.log(err);
-
-        setError(err?.data.message || err?.message || null);
+        setError(err?.data?.message || err?.message || null);
       })
       .finally(() => setIsLoading(false));
   }

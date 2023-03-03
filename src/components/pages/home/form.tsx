@@ -7,18 +7,22 @@ import { useForm } from "@/hooks";
 import type { ReturnDataTypes } from "@/hooks/useForm";
 
 interface LinkFormProps {
-  onSubmit: (
-    // eslint-disable-next-line no-unused-vars
-    data: ReturnDataTypes
-  ) => void;
+  isLoading?: boolean;
+  // eslint-disable-next-line no-unused-vars
+  onSubmit: (data: ReturnDataTypes, reset: () => void) => void;
   uid?: string;
 }
 
-function LinkForm({ onSubmit, uid }: LinkFormProps) {
+function LinkForm({ isLoading, onSubmit, uid }: LinkFormProps) {
   const [isSecret, setIsSecret] = useState<boolean>(false);
-  const { register, data, setForm } = useForm();
+  const { register, data, setForm, reset } = useForm();
 
   const ref = useRef<HTMLInputElement | null>(null);
+
+  const handleResetForm = () => {
+    reset();
+    setIsSecret(false);
+  };
 
   const labelStyle = "text-slate-800 font-medium cursor-pointer";
 
@@ -40,7 +44,7 @@ function LinkForm({ onSubmit, uid }: LinkFormProps) {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          onSubmit({ ...data, is_secret: isSecret });
+          onSubmit({ ...data, is_secret: isSecret }, handleResetForm);
         }}
         className={clsx(
           "w-full bg-white p-4 lg:p-6",
@@ -60,7 +64,8 @@ function LinkForm({ onSubmit, uid }: LinkFormProps) {
                 id: "input@url",
                 className: clsx("input-base"),
                 placeholder: "https://www.example.com",
-                required: true
+                required: true,
+                disabled: isLoading
               })}
             />
           </div>
@@ -68,7 +73,7 @@ function LinkForm({ onSubmit, uid }: LinkFormProps) {
           {/* Input Slug */}
           <div className={clsx("flex w-full flex-col gap-y-2")}>
             <label className={clsx(labelStyle)} htmlFor="input@slug">
-              Slug / Alias
+              Slug / Alias (optional)
             </label>
             <input
               {...register("slug", {
@@ -76,7 +81,7 @@ function LinkForm({ onSubmit, uid }: LinkFormProps) {
                 id: "input@slug",
                 className: clsx("input-base"),
                 placeholder: "example-slug",
-                required: true
+                disabled: isLoading
               })}
             />
           </div>
@@ -101,6 +106,7 @@ function LinkForm({ onSubmit, uid }: LinkFormProps) {
               name="is_secret"
               className="rounded"
               onChange={() => setIsSecret((prevState) => !prevState)}
+              disabled={isLoading}
               checked={isSecret}
             />
           </div>
@@ -122,7 +128,8 @@ function LinkForm({ onSubmit, uid }: LinkFormProps) {
                 ref,
                 className: clsx("input-base"),
                 placeholder: "Key",
-                required: isSecret
+                required: isSecret,
+                disabled: isLoading
               })}
             />
           </div>
@@ -145,6 +152,7 @@ function LinkForm({ onSubmit, uid }: LinkFormProps) {
             <Checkbox
               id="input@secret"
               type="checkbox"
+              disabled={isLoading}
               name="is_secret"
               className="rounded"
               onChange={() => setIsSecret((prevState) => !prevState)}
@@ -155,7 +163,8 @@ function LinkForm({ onSubmit, uid }: LinkFormProps) {
           <Button
             type="submit"
             className={clsx("w-full lg:w-auto lg:min-w-[175px]")}
-            disabled={!data.url}
+            disabled={!data.url || isLoading}
+            title={isLoading ? "Loading..." : "Create Shortlink"}
           >
             Create Shortlink
           </Button>
