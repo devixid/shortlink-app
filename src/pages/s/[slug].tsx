@@ -1,7 +1,6 @@
 import type { GetServerSideProps } from "next";
 import { NextSeo } from "next-seo";
 
-import { BASE_URL } from "@/constants";
 import { getShortlink, getShortlinkMetaData } from "@/services";
 import clsx from "clsx";
 
@@ -32,14 +31,16 @@ function LockedShortlink({ slug, metadata }: PageProps) {
           title: `[LOCKED] ${metadata?.title || "Locked Shortlink"}`,
           description:
             metadata?.description || "Description for locked shortlink",
-          url: `${BASE_URL}/s/${slug}`,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL || ""}/s/${slug}`,
           type: metadata?.type || "website",
           locale: metadata?.language || "en",
           images: [
             {
               url:
                 metadata?.image ||
-                `${BASE_URL}/api/og?title=Locked%20Shortlink`,
+                `${
+                  process.env.NEXT_PUBLIC_BASE_URL || ""
+                }/api/og?title=Locked%20Shortlink`,
               alt: "Primary OG Image",
               height: 630,
               width: 1200
@@ -47,7 +48,7 @@ function LockedShortlink({ slug, metadata }: PageProps) {
           ]
         }}
         twitter={{
-          site: `${BASE_URL}/s/${slug}`,
+          site: `${process.env.NEXT_PUBLIC_BASE_URL || ""}/s/${slug}`,
           cardType: "summary_large_image"
         }}
         additionalLinkTags={[
@@ -77,7 +78,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
   const { query } = context;
 
   const response: PageProps | null = await getShortlink(
-    `${BASE_URL}/api/link/${query.slug}`
+    `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/link/${query.slug}`
   )
     .then((res) => {
       if (res.status_code === 200) {
@@ -92,7 +93,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async (
     const { is_secret, slug, forward_url } = response;
 
     const getMetaData = await getShortlinkMetaData(
-      `${BASE_URL}/api/metadata/${query.slug}`
+      `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/metadata/${query.slug}`
     )
       .then((res) => res.data)
       .catch(() => null);

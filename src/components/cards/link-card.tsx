@@ -1,11 +1,10 @@
-import { BASE_URL } from "@/constants";
 import { Copy, Notif } from "@/utils";
 import clsx from "clsx";
 import { memo, useRef, useState } from "react";
 
 import { BsCheck2 } from "react-icons/bs";
-import { VscCopy } from "react-icons/vsc";
 import { HiOutlineTrash } from "react-icons/hi";
+import { VscCopy } from "react-icons/vsc";
 
 import { ModalConfirmation } from "../modals";
 
@@ -56,10 +55,9 @@ function LinkCard({
             Shortlink
           </h4>
           <div className={clsx("flex w-full items-center justify-start gap-3")}>
-            <p
-              className={clsx("line-clamp-1")}
-              ref={ref}
-            >{`${BASE_URL}/s/${slug}`}</p>
+            <p className={clsx("line-clamp-1")} ref={ref}>{`${
+              process.env.NEXT_PUBLIC_BASE_URL || ""
+            }/s/${slug}`}</p>
             <button
               type="button"
               className={clsx(
