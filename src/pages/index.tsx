@@ -142,7 +142,7 @@ export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
 
   if (!uid) {
     const getUID = await redaxios
-      .get(`${process.env.process.env.NEXT_PUBLIC_BASE_URL || ""}/api/uid`)
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/uid`)
       .then((result) => result.data.data.uid || null)
       .catch((error) => {
         // eslint-disable-next-line no-console
