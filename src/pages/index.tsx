@@ -1,8 +1,9 @@
 import clsx from "clsx";
-import type { AppContext } from "next/app";
+import type { GetServerSideProps } from "next";
 import { useMemo, useState } from "react";
 import redaxios from "redaxios";
 
+import { Navbar } from "@/components";
 import { LinkCard } from "@/components/cards";
 import { LinkForm } from "@/components/pages/home";
 import { BASE_URL } from "@/constants";
@@ -57,6 +58,8 @@ function HomePage() {
 
   return (
     <>
+      <Navbar />
+
       <header className={clsx("bg-gray-50", "pt-24 md:pt-28 lg:pt-32")}>
         <div className={clsx("container relative p-4 md:p-6")}>
           <h1
@@ -131,8 +134,9 @@ function HomePage() {
   );
 }
 
-export async function getServerSideProps(ctx: AppContext["ctx"]) {
-  const { req, res } = ctx;
+export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
+  // export async function getServerSideProps(ctx: AppContext["ctx"]) {
+  const { req, res } = context;
   const uid = Cookie.getOne("uid", { req, res });
 
   if (!uid) {
@@ -157,6 +161,6 @@ export async function getServerSideProps(ctx: AppContext["ctx"]) {
   return {
     props: {}
   };
-}
+};
 
 export default HomePage;

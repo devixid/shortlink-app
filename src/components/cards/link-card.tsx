@@ -13,7 +13,6 @@ import { ModalConfirmation } from "../modals";
 
 function LinkCard({
   _id,
-  // is_secret,
   original_link,
   link_key,
   slug,

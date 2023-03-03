@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import clsx from "clsx";
@@ -74,8 +75,11 @@ function ModalConfirmation({
     <Portal>
       {(open || isOpen) && (
         <div
+          role="dialog"
+          aria-labelledby="modal-confirmation"
+          aria-modal
           className={clsx(
-            "bg-black bg-opacity-50",
+            "bg-slate-900 bg-opacity-25",
             "fixed top-0 left-0 z-[60] h-full w-full",
             "flex flex-row items-center justify-center",
             "p-4 md:p-6",
