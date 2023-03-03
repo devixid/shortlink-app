@@ -6,7 +6,6 @@ import redaxios from "redaxios";
 import { Navbar } from "@/components";
 import { LinkCard } from "@/components/cards";
 import { LinkForm } from "@/components/pages/home";
-import { BASE_URL } from "@/constants";
 import { Cookie } from "@/helpers";
 import { useFetch } from "@/hooks";
 import type { ReturnDataTypes } from "@/hooks/useForm";
@@ -35,7 +34,7 @@ function HomePage() {
     reset: () => void
   ) => {
     await createShortlink(
-      `${BASE_URL}/api/link`,
+      `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/link`,
       formData as unknown as CreateShortlinkData
     ).then((res) => {
       if (res?.status_code === 201) {
@@ -48,7 +47,9 @@ function HomePage() {
   const onClickDelete = async () => {
     if (!deleteId) return;
 
-    await deleteShortlink(`${BASE_URL}/api/link/${deleteId}`).then((res) => {
+    await deleteShortlink(
+      `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/link/${deleteId}`
+    ).then((res) => {
       if (res.status_code === 200) {
         setShowModalConfirmation(false);
         refetch();
@@ -141,7 +142,7 @@ export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
 
   if (!uid) {
     const getUID = await redaxios
-      .get(`${process.env.BASE_URL}/api/uid`)
+      .get(`${process.env.process.env.NEXT_PUBLIC_BASE_URL || ""}/api/uid`)
       .then((result) => result.data.data.uid || null)
       .catch((error) => {
         // eslint-disable-next-line no-console

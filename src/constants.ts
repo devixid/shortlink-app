@@ -1,6 +1,7 @@
 import type { INotyfOptions } from "notyf";
 
-export const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://devix-shortlink-app.vercel.app";
 
 export const notyfOptions: Partial<INotyfOptions> = {
   dismissible: true,

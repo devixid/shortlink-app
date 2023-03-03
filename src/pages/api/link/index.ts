@@ -56,7 +56,9 @@ export default async function handler(
         message: "Success!",
         data: {
           uid,
-          url: `${process.env.BASE_URL as string}/${isSaved.link.slug}`
+          url: `${process.env.NEXT_PUBLIC_BASE_URL || ""}/s/${
+            isSaved.link.slug
+          }`
         }
       });
     } catch (error: any) {
