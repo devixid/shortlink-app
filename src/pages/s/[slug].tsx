@@ -66,7 +66,7 @@ function LockedShortlink({ slug, metadata }: PageProps) {
           "flex flex-row items-center justify-center"
         )}
       >
-        <h1>Link: {slug}</h1>
+        <h1>Link Locked</h1>
       </div>
     </>
   );
