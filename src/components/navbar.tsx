@@ -28,7 +28,7 @@ function Navbar() {
   ];
   const linkRight: NavbarLink[] = [
     {
-      url: "https://github.com/fullstuckid",
+      url: "https://github.com/devixid/shortlink-app",
       label: "Source Code",
       Icon: AiOutlineGithub,
       openInNewTab: true
